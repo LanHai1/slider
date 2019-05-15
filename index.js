@@ -78,7 +78,7 @@ for (let i = 0; i < ol_banner_current.length; i++) {
         // 设置点击事件 触发排他设置页码样式
     ol_banner_current[i].onclick = function() {
         // 轮播区域跟着页码点击一起移动
-        index = +this.getAttribute("index")
+        index = pageIndex = +this.getAttribute("index")
         bannerAnimation(ul_banner, -index * screenWidth)
         setPageClass(ol_banner_current, +this.getAttribute("index"))
     }
@@ -112,11 +112,7 @@ function bannerAnimation(el, target) {
         // 元素当前位置
         let count = el.offsetLeft
 
-        // 每次走10 判断左走还是右走
-        count += target > count ? 10 : -10
-
-        // 判断是否还能继续走10 不能直接跳到目标位置 取绝对值 可能是负数
-        count = Math.abs(target - count) > 10 ? count : target
+        count += target > count ? Math.ceil((target - count) / 10) : Math.floor((target - count) / 10)
 
         // 设置元素位置
         el.style.left = `${count}px`
